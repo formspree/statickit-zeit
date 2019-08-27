@@ -1,0 +1,10 @@
+{
+  "name": "statickit-zeit",
+  "description": "The StaticKit ZEIT integration",
+  "repository": "https://github.com/levelhq/statickit-zeit",
+  "license": "MIT",
+  "dependencies": {
+    "@zeit/integration-utils": "latest",
+    "preact": "^8.5.2"
+  }
+}
