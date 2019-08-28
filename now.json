@@ -2,5 +2,19 @@
   "name": "statickit-zeit",
   "scope": "statickit",
   "version": 2,
-  "builds": [{ "src": "index.js", "use": "@now/node" }]
+  "builds": [
+    { "src": "index.js", "use": "@now/node" },
+    { "src": "connect.js", "use": "@now/node" },
+    { "src": "callback.js", "use": "@now/node" }
+  ],
+  "routes": [
+    { "src": "/connect", "dest": "/connect.js" },
+    { "src": "/callback", "dest": "/callback.js" }
+  ],
+  "env": {
+    "STATICKIT_URL": "@statickit-url",
+    "STATICKIT_CLIENT_ID": "@statickit-client-id",
+    "STATICKIT_CLIENT_SECRET": "@statickit-client-secret",
+    "ROOT_URL": "@root-url"
+  }
 }

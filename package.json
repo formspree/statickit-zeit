@@ -5,6 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "@zeit/integration-utils": "latest",
+    "cookie": "^0.4.0",
+    "node-fetch": "^2.6.0",
     "preact": "^8.5.2"
   }
 }

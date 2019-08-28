@@ -1,2 +1,8 @@
+# Node
 node_modules
+
+# OS Noise
 .DS_Store
+
+# Development env
+.env
