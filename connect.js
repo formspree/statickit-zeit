@@ -21,11 +21,9 @@ module.exports = (req, res) => {
 
   res.writeHead(302, {
     Location: redirectUrl,
-    "Set-Cookie": cookie.serialize(
-      "statickit-context",
-      JSON.stringify(context),
-      { path: "/" }
-    )
+    "Set-Cookie": cookie.serialize("sk-context", JSON.stringify(context), {
+      path: "/"
+    })
   });
 
   res.end("Redirecting...");
