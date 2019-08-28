@@ -46,6 +46,11 @@ async function completeOAuthProcess({ payload, zeitClient, metadata }) {
 module.exports = withUiHook(async ({ payload, zeitClient }) => {
   const metadata = await zeitClient.getMetadata();
 
+  if (payload.action === "disconnect") {
+    delete metadata.skTokenInfo;
+    await zeitClient.setMetadata(metadata);
+  }
+
   if (!metadata.skTokenInfo && payload.query.code) {
     await completeOAuthProcess({ payload, zeitClient, metadata });
   }
