@@ -13,7 +13,7 @@ module.exports = (req, res) => {
 
   const state = `state_${Math.random()}`;
   const callbackUrl = `${ROOT_URL}/callback`;
-  const oAuthPath = `/oauth/authorize?client_id=${STATICKIT_CLIENT_ID}&redirect_uri=${callbackUrl}&state=${state}&scope=public+read+write&response_type=code`;
+  const oAuthPath = `/oauth/authorize?client_id=${STATICKIT_CLIENT_ID}&redirect_uri=${callbackUrl}&state=${state}&scope=read+write&response_type=code`;
   const redirectUrl = `${STATICKIT_URL}/signup?next=${encodeURIComponent(
     oAuthPath
   )}`;
