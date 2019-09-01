@@ -12,9 +12,9 @@
     { "src": "/callback", "dest": "/callback.js" }
   ],
   "env": {
-    "STATICKIT_URL": "@statickit-url",
-    "STATICKIT_CLIENT_ID": "@statickit-client-id",
-    "STATICKIT_CLIENT_SECRET": "@statickit-client-secret",
-    "ROOT_URL": "@root-url"
+    "ROOT_URL": "https://statickit-zeit.levelhq.now.sh",
+    "STATICKIT_URL": "https://app.statickit.com",
+    "STATICKIT_CLIENT_ID": "00db634c69528db4065463a6f8265561e416c40f50c08cd3092b34495e61f9f3",
+    "STATICKIT_CLIENT_SECRET": "@statickit-zeit-client-secret"
   }
 }
