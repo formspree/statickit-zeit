@@ -44,7 +44,7 @@ async function completeOAuthProcess({ payload, zeitClient, metadata }) {
   await zeitClient.setMetadata(metadata);
 }
 
-async function getForms(tokenInfo) {
+async function getPageData(tokenInfo) {
   const response = await fetch(`${STATICKIT_API_URL}/graphql`, {
     method: "POST",
     headers: {
@@ -53,6 +53,9 @@ async function getForms(tokenInfo) {
     },
     body: JSON.stringify({
       query: `{
+        viewer {
+          email
+        }
         forms(first: 10) {
           edges {
             node {
@@ -69,10 +72,12 @@ async function getForms(tokenInfo) {
 }
 
 const FormItem = ({ id, name }) => {
-  const href = `https://app.statickit.com/forms/${id}`;
+  const href = `${STATICKIT_URL}/forms/${id}`;
 
   return htm`
-    <LI><Link href=${href} target="_blank">${name}</Link></LI>
+    <Box marginBottom="8px" padding="4px" backgroundColor="#fff" borderRadius="8px">
+      <Box fontSize="18px" fontWeight="bold"><Link href=${href} target="_blank">${name}</Link></Box> 
+    </Box>
   `;
 };
 
@@ -89,18 +94,43 @@ module.exports = withUiHook(async ({ payload, zeitClient }) => {
   }
 
   if (metadata.skTokenInfo) {
-    const formQuery = await getForms(metadata.skTokenInfo);
+    const page = await getPageData(metadata.skTokenInfo);
 
     return htm`
       <Page>
-        <P>Connected to StaticKit</P>
-        <UL>
-          ${formQuery.data.forms.edges.map(
+        <Box marginBottom="20px" display="flex" alignItems="center">
+          <Box flexGrow="1" color="#666">
+            <P>Logged in as <B>${page.data.viewer.email}</B></P>
+          </Box>
+          <Button type="secondary" small action="disconnect">Sign Out</Button>
+        </Box>
+
+        <Box maxWidth="740px" margin="0 auto">
+          <Fieldset>
+            <FsContent>
+              <H2>Create a site</H2>
+              <P>Sites are how you organize your components in StaticKit.</P>
+              <Box marginTop="16px">
+                <Input name="name" label="Site Name" value="" placeholder="e.g. Marketing Site" width="75%" />
+              </Box>
+            </FsContent>
+            <FsFooter display="flex">
+              <Box display="flex" flexGrow="1" justifyContent="flex-start">
+                <P>Once you create a StaticKit site, you can start creating components.</P>
+              </Box>
+              <Box display="flex" flexGrow="0" justifyContent="flex-end">
+                <Button small action="create-site">Create site</Button>
+              </Box>
+            </FsFooter>
+          </Fieldset>
+        </Box>
+
+        <Box>
+          ${page.data.forms.edges.map(
             edge =>
               htm`<${FormItem} id=${edge.node.id} name=${edge.node.name} //>`
           )}
-        </UL>
-        <Button small action="disconnect">Disconnect</Button>
+        </Box>
       </Page>
     `;
   }
