@@ -4,6 +4,7 @@ const fetch = require("node-fetch");
 
 const {
   STATICKIT_URL,
+  STATICKIT_API_URL,
   STATICKIT_CLIENT_ID,
   STATICKIT_CLIENT_SECRET,
   ROOT_URL
@@ -43,6 +44,38 @@ async function completeOAuthProcess({ payload, zeitClient, metadata }) {
   await zeitClient.setMetadata(metadata);
 }
 
+async function getForms(tokenInfo) {
+  const response = await fetch(`${STATICKIT_API_URL}/graphql`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${tokenInfo["access_token"]}`
+    },
+    body: JSON.stringify({
+      query: `{
+        forms(first: 10) {
+          edges {
+            node {
+              id
+              name
+            }
+          }
+        }
+      }`
+    })
+  });
+
+  return response.json();
+}
+
+const FormItem = ({ id, name }) => {
+  const href = `https://app.statickit.com/forms/${id}`;
+
+  return htm`
+    <LI><Link href=${href} target="_blank">${name}</Link></LI>
+  `;
+};
+
 module.exports = withUiHook(async ({ payload, zeitClient }) => {
   const metadata = await zeitClient.getMetadata();
 
@@ -56,13 +89,20 @@ module.exports = withUiHook(async ({ payload, zeitClient }) => {
   }
 
   if (metadata.skTokenInfo) {
+    const formQuery = await getForms(metadata.skTokenInfo);
+
     return htm`
-			<Page>
-				<P>Connected to StaticKit</P>
-				<P>${JSON.stringify(metadata.skTokenInfo)}</P>
-				<Button small action="disconnect">Disconnect</Button>
-			</Page>
-		`;
+      <Page>
+        <P>Connected to StaticKit</P>
+        <UL>
+          ${formQuery.data.forms.edges.map(
+            edge =>
+              htm`<${FormItem} id=${edge.node.id} name=${edge.node.name} //>`
+          )}
+        </UL>
+        <Button small action="disconnect">Disconnect</Button>
+      </Page>
+    `;
   }
 
   const nextUrl = encodeURIComponent(payload.installationUrl);
