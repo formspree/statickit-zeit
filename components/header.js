@@ -1,7 +1,7 @@
 const { htm } = require("@zeit/integration-utils");
 
 module.exports = ({ viewer }) => htm`
-  <Box marginBottom="20px" display="flex" alignItems="center">
+  <Box marginBottom="20px" display="flex" alignItems="center" fontSize="13px">
     <Box flexGrow="1" color="#666">
       <P>Connected to <B>${viewer.email}</B></P>
     </Box>

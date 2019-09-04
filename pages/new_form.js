@@ -2,7 +2,9 @@ const { htm } = require("@zeit/integration-utils");
 const Header = require("../components/header");
 const ValidationError = require("../components/validation_error");
 
-module.exports = ({ pageData, account, errors }) => {
+module.exports = ({ pageData, errors }) => {
+  const firstAccount = pageData.data.accounts.edges[0].node;
+
   return htm`
     ${
       errors.length > 0
@@ -12,20 +14,25 @@ module.exports = ({ pageData, account, errors }) => {
 
     <${Header} viewer=${pageData.data.viewer} />
 
-    <Box paddingBottom="16px" marginBottom="24px" borderBottom="1px solid #eaeaea">
-      <H1>${account.name}</H1>
-    </Box>
-
     <Box maxWidth="740px" margin="0 auto">
       <Fieldset>
         <FsContent>
           <H2>Create a form</H2>
           <P>Just give your form a name and you'll be on your way!</P>
-          <ClientState accountId=${account.id} />
-          <Box marginTop="16px">
+
+          <Box margin="16px 0">
             <Input name="name" label="Form Name" value="" placeholder="e.g. Contact Form" width="75%" />
+            <${ValidationError} field="name" prefix="Name" errors=${errors} />
           </Box>
-          <${ValidationError} field="name" prefix="Name" errors=${errors} />
+
+          <Box fontWeight="500" fontSize="14px" color="black">Project</Box>
+
+          <Select name="accountId" value=${firstAccount.id}>
+            ${pageData.data.accounts.edges.map(
+              edge =>
+                htm`<Option value=${edge.node.id} caption=${edge.node.name} />`
+            )}
+          </Select>
         </FsContent>
         <FsFooter display="flex">
           <Box display="flex" flexGrow="1" justifyContent="flex-start">

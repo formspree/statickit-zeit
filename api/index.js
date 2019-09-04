@@ -12,6 +12,7 @@ const {
 
 const NewAccountPage = require("../pages/new_account");
 const NewFormPage = require("../pages/new_form");
+const FormsPage = require("../pages/forms");
 
 async function completeOAuthProcess({ payload, zeitClient, metadata }) {
   const url = `${STATICKIT_URL}/oauth/token`;
@@ -64,13 +65,17 @@ async function getPageData(tokenInfo) {
             node {
               id
               name
-              forms(first: 100) {
-                edges {
-                  node {
-                    id
-                    name
-                  }
-                }
+            }
+          }
+        }
+        forms(first: 100) {
+          edges {
+            node {
+              id
+              name
+              account {
+                id
+                name
               }
             }
           }
@@ -152,16 +157,6 @@ async function createForm(tokenInfo, params) {
   return response.json();
 }
 
-const FormItem = ({ id, name }) => {
-  const href = `${STATICKIT_URL}/forms/${id}`;
-
-  return htm`
-    <Box marginBottom="8px" padding="4px" backgroundColor="#fff" borderRadius="8px">
-      <Box fontSize="18px" fontWeight="bold"><Link href=${href} target="_blank">${name}</Link></Box> 
-    </Box>
-  `;
-};
-
 module.exports = withUiHook(async ({ payload, zeitClient }) => {
   const metadata = await zeitClient.getMetadata();
   const tokenInfo = metadata.skTokenInfo;
@@ -220,50 +215,25 @@ module.exports = withUiHook(async ({ payload, zeitClient }) => {
 
   const pageData = await getPageData(tokenInfo);
 
-  switch (pageData.data.accounts.edges.length) {
-    case 0:
+  if (pageData.data.accounts.edges.length == 0) {
+    return htm`
+      <Page>
+        <${NewAccountPage} pageData=${pageData} errors=${[]} />
+      </Page>
+    `;
+  } else {
+    if (pageData.data.forms.edges.length == 0) {
       return htm`
         <Page>
-          <${NewAccountPage} pageData=${pageData} errors=${[]} />
+          <${NewFormPage} pageData=${pageData} errors=${[]} />
         </Page>
       `;
-
-    case 1:
-      const account = pageData.data.accounts.edges[0].node;
-
-      if (account.forms.edges.length == 0) {
-        return htm`
-          <Page>
-            <${NewFormPage} pageData=${pageData} account=${account} errors=${[]} />
-          </Page>
-        `;
-      }
-
+    } else {
       return htm`
         <Page>
-          ${JSON.stringify(account)}
+          <${FormsPage} pageData=${pageData} errors=${[]} />
         </Page>
       `;
-
-    default:
-      return htm`
-        <Page>
-          ${JSON.stringify(pageData)}
-        </Page>
-      `;
+    }
   }
-
-  // return htm`
-  //   <Page>
-  //     ${JSON.stringify(payload)}
-  //     <${Header} viewer=${pageData.data.viewer} />
-
-  //     <Box>
-  //       ${pageData.data.forms.edges.map(
-  //         edge =>
-  //           htm`<${FormItem} id=${edge.node.id} name=${edge.node.name} //>`
-  //       )}
-  //     </Box>
-  //   </Page>
-  // `;
 });
