@@ -159,9 +159,13 @@ async function createForm(tokenInfo, params) {
 
 module.exports = withUiHook(async ({ payload, zeitClient }) => {
   const metadata = await zeitClient.getMetadata();
-  const tokenInfo = metadata.skTokenInfo;
 
-  if (!tokenInfo) {
+  if (payload.action === "disconnect") {
+    delete metadata.skTokenInfo;
+    await zeitClient.setMetadata(metadata);
+  }
+
+  if (!metadata.skTokenInfo) {
     if (payload.query.code) {
       await completeOAuthProcess({ payload, zeitClient, metadata });
     } else {
@@ -170,16 +174,20 @@ module.exports = withUiHook(async ({ payload, zeitClient }) => {
 
       return htm`
         <Page>
-          <Link href=${connectUrl}>Connect with StaticKit</Link>
+          <Box border="1px solid #eaeaea" borderRadius="8px" padding="64px" textAlign="center" background="white">
+            <Box paddingBottom="16px">
+              <H1>Connect StaticKit to your ZEIT account</H1>
+            </Box>
+            <Box fontWeight="bold">
+              <Link href=${connectUrl}>Connect Now →</Link>
+            </Box>
+          </Box>
         </Page>
       `;
     }
   }
 
-  if (payload.action === "disconnect") {
-    delete metadata.skTokenInfo;
-    await zeitClient.setMetadata(metadata);
-  }
+  const tokenInfo = metadata.skTokenInfo;
 
   if (payload.action === "createAccount") {
     const mutation = await createSite(tokenInfo, payload.clientState);
