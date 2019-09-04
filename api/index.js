@@ -92,7 +92,7 @@ async function createSite(tokenInfo, params) {
     body: JSON.stringify({
       query: `
         mutation CreateAccount(
-          $name: String
+          $name: String!
         ) {
           createAccount(name: $name) {
             success
@@ -102,6 +102,43 @@ async function createSite(tokenInfo, params) {
               code
             }
             account {
+              id
+              name
+            }
+          }
+        }
+      `,
+      variables: params
+    })
+  });
+
+  return response.json();
+}
+
+async function createForm(tokenInfo, params) {
+  const response = await fetch(`${STATICKIT_API_URL}/graphql`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${tokenInfo["access_token"]}`
+    },
+    body: JSON.stringify({
+      query: `
+        mutation CreateForm(
+          $accountId: ID!
+          $name: String!
+        ) {
+          createForm(
+            accountId: $accountId, 
+            name: $name
+          ) {
+            success
+            errors {
+              field
+              message
+              code
+            }
+            form {
               id
               name
             }
@@ -149,7 +186,7 @@ module.exports = withUiHook(async ({ payload, zeitClient }) => {
     await zeitClient.setMetadata(metadata);
   }
 
-  if (payload.action === "create-account") {
+  if (payload.action === "createAccount") {
     const mutation = await createSite(tokenInfo, payload.clientState);
 
     if (!mutation.data.createAccount.success) {
@@ -158,6 +195,24 @@ module.exports = withUiHook(async ({ payload, zeitClient }) => {
       return htm`
         <Page>
           <${NewAccountPage} pageData=${pageData} errors=${mutation.data.createAccount.errors} />
+        </Page>
+      `;
+    }
+  }
+
+  if (payload.action === "createForm") {
+    const mutation = await createForm(tokenInfo, payload.clientState);
+
+    if (!mutation.data.createForm.success) {
+      const pageData = await getPageData(tokenInfo);
+
+      const account = pageData.data.accounts.edges.find(edge => {
+        return edge.node.id == payload.clientState.accountId;
+      }).node;
+
+      return htm`
+        <Page>
+          <${NewFormPage} pageData=${pageData} account=${account} errors=${mutation.data.createForm.errors} />
         </Page>
       `;
     }

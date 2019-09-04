@@ -21,7 +21,7 @@ module.exports = ({ pageData, account, errors }) => {
         <FsContent>
           <H2>Create a form</H2>
           <P>Just give your form a name and you'll be on your way!</P>
-          
+          <ClientState accountId=${account.id} />
           <Box marginTop="16px">
             <Input name="name" label="Form Name" value="" placeholder="e.g. Contact Form" width="75%" />
           </Box>
@@ -32,7 +32,7 @@ module.exports = ({ pageData, account, errors }) => {
             <P>Choose a descriptive name for your form.</P>
           </Box>
           <Box display="flex" flexGrow="0" justifyContent="flex-end">
-            <Button small action="create-form">Create Form</Button>
+            <Button small action="createForm">Create Form</Button>
           </Box>
         </FsFooter>
       </Fieldset>
