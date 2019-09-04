@@ -2,14 +2,10 @@
   "name": "statickit-zeit",
   "scope": "levelhq",
   "version": 2,
-  "builds": [
-    { "src": "index.js", "use": "@now/node" },
-    { "src": "connect.js", "use": "@now/node" },
-    { "src": "callback.js", "use": "@now/node" }
-  ],
   "routes": [
-    { "src": "/connect", "dest": "/connect.js" },
-    { "src": "/callback", "dest": "/callback.js" }
+    { "src": "/", "dest": "/api/index.js" },
+    { "src": "/connect", "dest": "/api/connect.js" },
+    { "src": "/callback", "dest": "/api/callback.js" }
   ],
   "env": {
     "ROOT_URL": "https://statickit-zeit.levelhq.now.sh",
