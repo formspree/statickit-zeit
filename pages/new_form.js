@@ -25,7 +25,7 @@ module.exports = ({ pageData, errors }) => {
             <${ValidationError} field="name" prefix="Name" errors=${errors} />
           </Box>
 
-          <Box fontWeight="500" fontSize="14px" color="black">Project</Box>
+          <Box fontWeight="500" fontSize="14px" color="black">Site</Box>
 
           <Select name="accountId" value=${firstAccount.id}>
             ${pageData.data.accounts.edges.map(
