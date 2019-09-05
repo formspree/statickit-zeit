@@ -3,7 +3,7 @@ const Header = require("../components/header");
 const ValidationError = require("../components/validation_error");
 
 module.exports = ({ pageData, errors }) => {
-  const firstAccount = pageData.data.accounts.edges[0].node;
+  const firstSite = pageData.data.sites.edges[0].node;
 
   return htm`
     ${
@@ -27,8 +27,8 @@ module.exports = ({ pageData, errors }) => {
 
           <Box fontWeight="500" fontSize="14px" color="black">Site</Box>
 
-          <Select name="accountId" value=${firstAccount.id}>
-            ${pageData.data.accounts.edges.map(
+          <Select name="siteId" value=${firstSite.id}>
+            ${pageData.data.sites.edges.map(
               edge =>
                 htm`<Option value=${edge.node.id} caption=${edge.node.name} />`
             )}

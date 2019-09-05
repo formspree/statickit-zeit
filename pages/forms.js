@@ -4,7 +4,7 @@ const Header = require("../components/header");
 const { STATICKIT_URL } = process.env;
 
 const FormItem = ({ form }) => {
-  const href = `${STATICKIT_URL}/forms/${form.id}`;
+  const href = `${STATICKIT_URL}/sites/${form.site.id}/forms/${form.id}`;
 
   return htm`
     <Box marginBottom="16px" padding="0 8px" width="50%">
@@ -19,7 +19,7 @@ const FormItem = ({ form }) => {
         </Box>
 
         <Box paddingBottom="36px" color="#555" fontSize="14px">
-          ${form.account.name}
+          ${form.site.name}
         </Box>
 
         <Box color="#777">

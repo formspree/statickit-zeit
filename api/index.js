@@ -10,7 +10,7 @@ const {
   ROOT_URL
 } = process.env;
 
-const NewAccountPage = require("../pages/new_account");
+const NewSitePage = require("../pages/new_site");
 const NewFormPage = require("../pages/new_form");
 const FormsPage = require("../pages/forms");
 
@@ -60,7 +60,7 @@ async function getPageData(tokenInfo) {
         viewer {
           email
         }
-        accounts(first: 100) {
+        sites(first: 100) {
           edges {
             node {
               id
@@ -73,7 +73,7 @@ async function getPageData(tokenInfo) {
             node {
               id
               name
-              account {
+              site {
                 id
                 name
               }
@@ -96,17 +96,17 @@ async function createSite(tokenInfo, params) {
     },
     body: JSON.stringify({
       query: `
-        mutation CreateAccount(
+        mutation CreateSite(
           $name: String!
         ) {
-          createAccount(name: $name) {
+          createSite(name: $name) {
             success
             errors {
               field
               message
               code
             }
-            account {
+            site {
               id
               name
             }
@@ -130,11 +130,11 @@ async function createForm(tokenInfo, params) {
     body: JSON.stringify({
       query: `
         mutation CreateForm(
-          $accountId: ID!
+          $siteId: ID!
           $name: String!
         ) {
           createForm(
-            accountId: $accountId, 
+            siteId: $siteId, 
             name: $name
           ) {
             success
@@ -189,15 +189,15 @@ module.exports = withUiHook(async ({ payload, zeitClient }) => {
 
   const tokenInfo = metadata.skTokenInfo;
 
-  if (payload.action === "createAccount") {
+  if (payload.action === "createSite") {
     const mutation = await createSite(tokenInfo, payload.clientState);
 
-    if (!mutation.data.createAccount.success) {
+    if (!mutation.data.createSite.success) {
       const pageData = await getPageData(tokenInfo);
 
       return htm`
         <Page>
-          <${NewAccountPage} pageData=${pageData} errors=${mutation.data.createAccount.errors} />
+          <${NewSitePage} pageData=${pageData} errors=${mutation.data.createSite.errors} />
         </Page>
       `;
     }
@@ -209,13 +209,13 @@ module.exports = withUiHook(async ({ payload, zeitClient }) => {
     if (!mutation.data.createForm.success) {
       const pageData = await getPageData(tokenInfo);
 
-      const account = pageData.data.accounts.edges.find(edge => {
-        return edge.node.id == payload.clientState.accountId;
+      const site = pageData.data.sites.edges.find(edge => {
+        return edge.node.id == payload.clientState.siteId;
       }).node;
 
       return htm`
         <Page>
-          <${NewFormPage} pageData=${pageData} account=${account} errors=${mutation.data.createForm.errors} />
+          <${NewFormPage} pageData=${pageData} site=${site} errors=${mutation.data.createForm.errors} />
         </Page>
       `;
     }
@@ -223,10 +223,10 @@ module.exports = withUiHook(async ({ payload, zeitClient }) => {
 
   const pageData = await getPageData(tokenInfo);
 
-  if (pageData.data.accounts.edges.length == 0) {
+  if (pageData.data.sites.edges.length == 0) {
     return htm`
       <Page>
-        <${NewAccountPage} pageData=${pageData} errors=${[]} />
+        <${NewSitePage} pageData=${pageData} errors=${[]} />
       </Page>
     `;
   } else {

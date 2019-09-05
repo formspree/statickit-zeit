@@ -28,7 +28,7 @@ module.exports = ({ pageData, errors }) => {
             <P>Choose a descriptive name for your site.</P>
           </Box>
           <Box display="flex" flexGrow="0" justifyContent="flex-end">
-            <Button small action="createAccount">Create site</Button>
+            <Button small action="createSite">Create site</Button>
           </Box>
         </FsFooter>
       </Fieldset>
