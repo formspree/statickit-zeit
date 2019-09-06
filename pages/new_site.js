@@ -10,7 +10,7 @@ module.exports = ({ pageData, errors }) => {
         : ""
     }
 
-    <${Header} viewer=${pageData.data.viewer} />
+    <${Header} viewer=${pageData.data.viewer} sites=${pageData.data.sites} />
 
     <Box maxWidth="740px" margin="0 auto">
       <Fieldset>

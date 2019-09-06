@@ -203,6 +203,17 @@ module.exports = withUiHook(async ({ payload, zeitClient }) => {
     }
   }
 
+  if (payload.action === "newForm") {
+    const pageData = await getPageData(tokenInfo);
+    const site = pageData.data.sites.edges[0].node;
+
+    return htm`
+      <Page>
+        <${NewFormPage} pageData=${pageData} site=${site} errors=${[]} />
+      </Page>
+    `;
+  }
+
   if (payload.action === "createForm") {
     const mutation = await createForm(tokenInfo, payload.clientState);
 

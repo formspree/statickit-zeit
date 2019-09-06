@@ -12,9 +12,15 @@ module.exports = ({ pageData, errors }) => {
         : ""
     }
 
-    <${Header} viewer=${pageData.data.viewer} />
+    <${Header} viewer=${pageData.data.viewer} sites=${pageData.data.sites} />
 
     <Box maxWidth="740px" margin="0 auto">
+      ${
+        pageData.data.forms.edges.length > 0
+          ? htm`<Box><Link action="index">← Back</Link></Box>`
+          : ""
+      }
+
       <Fieldset>
         <FsContent>
           <H2>Create a form</H2>

@@ -36,7 +36,7 @@ module.exports = ({ pageData }) => {
   });
 
   return htm`
-    <${Header} viewer=${pageData.data.viewer} />
+    <${Header} viewer=${pageData.data.viewer} sites=${pageData.data.sites} />
 
     <Box display="flex" flexWrap="wrap" boxSizing="border-box" margin="0 -8px" minHeight="100px">
       ${forms.map(form => htm`<${FormItem} form=${form} />`)}
