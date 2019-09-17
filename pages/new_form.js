@@ -23,7 +23,7 @@ module.exports = ({ pageData, errors }) => {
 
       <Fieldset>
         <FsContent>
-          <H2>Create a form</H2>
+          <H1>Create a form</H1>
           <P>Just give your form a name and you'll be on your way!</P>
 
           <Box margin="16px 0">
