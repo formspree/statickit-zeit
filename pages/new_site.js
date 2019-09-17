@@ -15,7 +15,7 @@ module.exports = ({ pageData, errors }) => {
     <Box maxWidth="740px" margin="0 auto">
       <Fieldset>
         <FsContent>
-          <H2>Create a site</H2>
+          <H1>Create a site</H1>
           <P>Once you add your site to StaticKit, you can start creating forms.</P>
           
           <Box marginTop="16px">
