@@ -18,7 +18,7 @@ const FormItem = ({ form }) => {
           </Box>
         </Box>
 
-        <Box paddingBottom="42px" color="#555" fontSize="14px">
+        <Box paddingBottom="42px" color="#555" fontSize="16px">
           ${form.site.name}
         </Box>
 
