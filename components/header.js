@@ -8,10 +8,13 @@ module.exports = ({ viewer, sites }) => htm`
       }</B> · <Link action="disconnect">Disconnect</Link></P>
     </Box>
 
-    <Box marginRight="4px">
+    <Box marginRight="4px" display="flex" alignItems="center">
+      <Box>
+        <Link href="https://statickit.com/docs" target="_blank">Docs</Link>
+      </Box>
       ${
         sites.edges.length > 0
-          ? htm`<Button type="secondary" small action="newForm">+ New Form</Button>`
+          ? htm`<Box marginLeft="16px"><Button type="secondary" small action="newForm">+ New Form</Button></Box>`
           : ""
       }
     </Box>
