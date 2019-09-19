@@ -1,7 +1,7 @@
 {
   "name": "statickit-zeit",
   "description": "The StaticKit ZEIT integration",
-  "repository": "https://github.com/levelhq/statickit-zeit",
+  "repository": "https://github.com/unstacked/statickit-zeit",
   "license": "MIT",
   "dependencies": {
     "@zeit/integration-utils": "latest",
