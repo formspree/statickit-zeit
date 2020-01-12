@@ -73,10 +73,10 @@ async function getPageData(tokenInfo) {
             node {
               id
               name
+              key
               site {
                 id
                 name
-                key
               }
             }
           }
