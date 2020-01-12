@@ -31,6 +31,11 @@ module.exports = ({ pageData, errors }) => {
             <${ValidationError} field="name" prefix="Name" errors=${errors} />
           </Box>
 
+          <Box margin="16px 0">
+            <Input name="key" label="Form Key" value="" placeholder="e.g. contactForm" width="75%" />
+            <${ValidationError} field="key" prefix="Key" errors=${errors} />
+          </Box>
+
           <Box fontWeight="500" fontSize="14px" color="black">Site</Box>
 
           <Select name="siteId" value=${firstSite.id}>

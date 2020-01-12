@@ -132,10 +132,12 @@ async function createForm(tokenInfo, params) {
         mutation CreateForm(
           $siteId: ID!
           $name: String!
+          $key: String!
         ) {
           createForm(
             siteId: $siteId, 
-            name: $name
+            name: $name,
+            key: $key
           ) {
             success
             errors {
