@@ -76,6 +76,7 @@ async function getPageData(tokenInfo) {
               site {
                 id
                 name
+                key
               }
             }
           }

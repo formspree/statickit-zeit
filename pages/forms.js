@@ -14,7 +14,7 @@ const FormItem = ({ form }) => {
         <Box display="flex" paddingBottom="8px" fontWeight="bold">
           <Box flexGrow="1" fontSize="24px">${form.name}</Box>
           <Box color="#777" fontFamily="monospace" fontSize="14px">
-            ${form.id}
+            ${form.key}
           </Box>
         </Box>
 
