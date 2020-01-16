@@ -4,14 +4,13 @@ const Header = require("../components/header");
 const { STATICKIT_URL } = process.env;
 
 const FormItem = ({ form }) => {
-  const installationUrl = `${STATICKIT_URL}/sites/${form.site.id}/forms/${form.id}`;
-  const submissionsUrl = `${STATICKIT_URL}/sites/${form.site.id}/forms/${form.id}/submissions`;
-  const settingsUrl = `${STATICKIT_URL}/sites/${form.site.id}/forms/${form.id}/edit`;
+  const submissionsUrl = `${STATICKIT_URL}/sites/${form.site.id}/forms/${form.id}`;
+  const settingsUrl = `${STATICKIT_URL}/sites/${form.site.id}/forms/${form.id}/settings`;
 
   return htm`
     <Box marginBottom="16px" padding="0 8px" width="50%">
       <Box padding="21.3333px" borderRadius="8px" backgroundColor="white" boxShadow="rgba(0, 0, 0, 0.12) 0px 5px 10px">
-        <Box display="flex" paddingBottom="8px" fontWeight="bold">
+        <Box display="flex" paddingBottom="8px">
           <Box flexGrow="1" fontSize="24px">${form.name}</Box>
           <Box color="#777" fontFamily="monospace" fontSize="14px">
             ${form.key}
@@ -23,9 +22,6 @@ const FormItem = ({ form }) => {
         </Box>
 
         <Box display="flex">
-          <Box marginRight="16px">
-            <Link href=${installationUrl} target="_blank">Installation</Link>
-          </Box>
           <Box marginRight="16px">
             <Link href=${submissionsUrl} target="_blank">Submissions</Link>
           </Box>

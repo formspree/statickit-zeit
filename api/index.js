@@ -15,7 +15,7 @@ const NewFormPage = require("../pages/new_form");
 const FormsPage = require("../pages/forms");
 
 async function completeOAuthProcess({ payload, zeitClient, metadata }) {
-  const url = `${STATICKIT_URL}/oauth/token`;
+  const url = `${STATICKIT_API_URL}/oauth/token`;
 
   const response = await fetch(url, {
     method: "POST",

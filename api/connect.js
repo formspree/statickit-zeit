@@ -4,9 +4,8 @@ const cookie = require("cookie");
 const { STATICKIT_URL, STATICKIT_CLIENT_ID, ROOT_URL } = process.env;
 
 module.exports = (req, res) => {
-  console.log(process.env);
-
   const { query } = parseUrl(req.url, true);
+
   if (!query.next) {
     res.writeHead(403);
     res.end("Query param next is required");
