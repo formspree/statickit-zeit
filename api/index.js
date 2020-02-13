@@ -3,15 +3,14 @@ const qs = require("querystring");
 const fetch = require("node-fetch");
 
 const {
-  STATICKIT_URL,
   STATICKIT_API_URL,
   STATICKIT_CLIENT_ID,
   STATICKIT_CLIENT_SECRET,
   ROOT_URL
 } = process.env;
 
+const BlankSlatePage = require("../pages/blank_slate");
 const NewSitePage = require("../pages/new_site");
-const NewFormPage = require("../pages/new_form");
 const FormsPage = require("../pages/forms");
 
 async function completeOAuthProcess({ payload, zeitClient, metadata }) {
@@ -206,35 +205,6 @@ module.exports = withUiHook(async ({ payload, zeitClient }) => {
     }
   }
 
-  if (payload.action === "newForm") {
-    const pageData = await getPageData(tokenInfo);
-    const site = pageData.data.sites.edges[0].node;
-
-    return htm`
-      <Page>
-        <${NewFormPage} pageData=${pageData} site=${site} errors=${[]} />
-      </Page>
-    `;
-  }
-
-  if (payload.action === "createForm") {
-    const mutation = await createForm(tokenInfo, payload.clientState);
-
-    if (!mutation.data.createForm.success) {
-      const pageData = await getPageData(tokenInfo);
-
-      const site = pageData.data.sites.edges.find(edge => {
-        return edge.node.id == payload.clientState.siteId;
-      }).node;
-
-      return htm`
-        <Page>
-          <${NewFormPage} pageData=${pageData} site=${site} errors=${mutation.data.createForm.errors} />
-        </Page>
-      `;
-    }
-  }
-
   const pageData = await getPageData(tokenInfo);
 
   if (pageData.data.sites.edges.length == 0) {
@@ -247,7 +217,7 @@ module.exports = withUiHook(async ({ payload, zeitClient }) => {
     if (pageData.data.forms.edges.length == 0) {
       return htm`
         <Page>
-          <${NewFormPage} pageData=${pageData} errors=${[]} />
+          <${BlankSlatePage} pageData=${pageData} errors=${[]} />
         </Page>
       `;
     } else {

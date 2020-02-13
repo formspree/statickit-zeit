@@ -5,13 +5,12 @@ const { STATICKIT_URL } = process.env;
 
 const FormItem = ({ form }) => {
   const submissionsUrl = `${STATICKIT_URL}/sites/${form.site.id}/forms/${form.id}`;
-  const settingsUrl = `${STATICKIT_URL}/sites/${form.site.id}/forms/${form.id}/settings`;
 
   return htm`
     <Box marginBottom="16px" padding="0 8px" width="50%">
       <Box padding="21.3333px" borderRadius="8px" backgroundColor="white" boxShadow="rgba(0, 0, 0, 0.12) 0px 5px 10px">
         <Box display="flex" paddingBottom="8px">
-          <Box flexGrow="1" fontSize="24px">${form.name}</Box>
+          <Box flexGrow="1" fontSize="24px" fontWeight="bold" letterSpacing="-0.5px">${form.name}</Box>
           <Box color="#777" fontFamily="monospace" fontSize="14px">
             ${form.key}
           </Box>
@@ -24,9 +23,6 @@ const FormItem = ({ form }) => {
         <Box display="flex">
           <Box marginRight="16px">
             <Link href=${submissionsUrl} target="_blank">Submissions</Link>
-          </Box>
-          <Box marginRight="16px">
-            <Link href=${settingsUrl} target="_blank">Settings</Link>
           </Box>
         </Box>
       </Box>
